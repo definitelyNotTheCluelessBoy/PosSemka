@@ -1,0 +1,3 @@
+C:/Users/Matúš/CLionProjects/semestralkaClient/cmake-build-local/CMakeFiles/semestralkaClient.dir
+C:/Users/Matúš/CLionProjects/semestralkaClient/cmake-build-local/CMakeFiles/edit_cache.dir
+C:/Users/Matúš/CLionProjects/semestralkaClient/cmake-build-local/CMakeFiles/rebuild_cache.dir

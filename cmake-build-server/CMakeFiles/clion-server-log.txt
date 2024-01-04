@@ -1,0 +1,4 @@
+/usr/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" -S /tmp/tmp.rx18xsJ55V -B /tmp/tmp.rx18xsJ55V/cmake-build-server
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /tmp/tmp.rx18xsJ55V/cmake-build-server
