@@ -6,7 +6,7 @@
 #define SEMESTRALKACLIENT_SIMULATION_H
 
 #include "Cell.h"
-#include "my_socket.h"
+#include "Socket.h"
 #include <vector>
 #include <random>
 #include <thread>
@@ -21,9 +21,8 @@ using namespace std;
 
 class Simulation {
 private:
+    Socket* socket;
     mutex mutVar;
-    condition_variable simulation;
-    condition_variable listen;
     bool hold;
 
     vector<vector<Cell*>> playField;
@@ -42,7 +41,7 @@ private:
     string playingFieldToString();
 
 public:
-    Simulation(int size, double probabilityForTrees, double probabilityForWater, double probabilityPlains, double probabilityForRocks);
+    Simulation(int size, double probabilityForTrees, double probabilityForWater, double probabilityPlains, double probabilityForRocks, Socket* socket);
     ~Simulation();
     void simulate();
     void listenInput();

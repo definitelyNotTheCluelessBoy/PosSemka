@@ -7,14 +7,16 @@
 static uniform_real_distribution<double> uniformDistribution(0,1);
 static default_random_engine rng;
 
-Simulation::Simulation(int size, double probabilityForTrees, double probabilityForWater, double probabilityPlains, double probabilityForRocks) {
+Simulation::Simulation(int size, double probabilityForTrees, double probabilityForWater, double probabilityPlains, double probabilityForRocks, Socket* socket) {
     this->playFieldSize=size;
     this->windCountDown=0;
     this->wind='X';
     this->hold = false;
     this->run = true;
+    this->socket=socket;
 
-    rng.seed(chrono::system_clock::now().time_since_epoch().count());
+
+    rng.seed(std::chrono::system_clock::now().time_since_epoch().count());
 
     for (int i = 0; i < size; ++i) {
         vector<Cell*> tempVector;
@@ -288,9 +290,14 @@ void Simulation::listenInput() {
             }
             if (input == ":end") {
                 this->run = false;
+                this->socket->write("\\end");
             }
             if (input == ":save") {
-                cout << this->playingFieldToString();
+                this->socket->write(this->playingFieldToString());
+            }
+            if (input == ":download") {
+                this->socket->write("download");
+                this->socket->read();
             }
         }
 
