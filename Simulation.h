@@ -6,29 +6,34 @@
 #define SEMESTRALKACLIENT_SIMULATION_H
 
 #include "Cell.h"
-#include "Socket.h"
 #include <vector>
 #include <random>
 #include <thread>
 #include <iostream>
-#include <windows.h>
 #include <mutex>
 #include <condition_variable>
 #include <sstream>
+#include <iostream>
+#include <boost/asio.hpp>
 
 using namespace std;
+using namespace boost::asio;
+using ip::tcp;
+using std::string;
+using std::cout;
+using std::endl;
+
 
 
 class Simulation {
 private:
-    Socket* socket;
     mutex mutVar;
     bool hold;
 
-    vector<vector<Cell*>> playField;
+    vector<vector<Cell>> playField;
 
     int playFieldSize;
-    char wind;
+    string wind;
     int windCountDown;
     bool run;
 
@@ -39,9 +44,13 @@ private:
     void generateWind();
     void printOut();
     string playingFieldToString();
+    static string read(tcp::socket & socket);
+    static void write(string stringtowrite, tcp::socket & socket);
+    void replace(string message);
+    static vector<string> split(string stringToParse, char delimeter);
 
 public:
-    Simulation(int size, double probabilityForTrees, double probabilityForWater, double probabilityPlains, double probabilityForRocks, Socket* socket);
+    Simulation(int size, double probabilityForTrees, double probabilityForWater, double probabilityPlains, double probabilityForRocks);
     ~Simulation();
     void simulate();
     void listenInput();
