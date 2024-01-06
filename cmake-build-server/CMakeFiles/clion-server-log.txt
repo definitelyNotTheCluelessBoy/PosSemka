@@ -1,17 +1,5 @@
 /usr/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" -S /tmp/tmp.rx18xsJ55V -B /tmp/tmp.rx18xsJ55V/cmake-build-server
 -- Could NOT find Boost: Found unsuitable version "1.74.0", but required is at least "1.84.0" (found /usr/include, )
 -- Configuring done
-CMake Error at CMakeLists.txt:9 (add_executable):
-  Cannot find source file:
-
-    Cell.cpp
-
-  Tried extensions .c .C .c++ .cc .cpp .cxx .cu .m .M .mm .h .hh .h++ .hm
-  .hpp .hxx .in .txx
-
-
-CMake Error at CMakeLists.txt:9 (add_executable):
-  No SOURCES given to target: semestralkaClient
-
-
-CMake Generate step failed.  Build files cannot be regenerated correctly.
+-- Generating done
+-- Build files have been written to: /tmp/tmp.rx18xsJ55V/cmake-build-server

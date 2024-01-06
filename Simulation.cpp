@@ -268,6 +268,7 @@ bool Simulation::setCellAflame(int Y, int X) {
 }
 
 void Simulation::listenInput() {
+
     io_service io_service;
     tcp::socket socket(io_service);
     boost::asio::ip::tcp::resolver resolver(io_service);
@@ -275,41 +276,48 @@ void Simulation::listenInput() {
     boost::asio::ip::tcp::resolver::iterator iter = resolver.resolve(query);
     boost::asio::ip::tcp::endpoint endpoint = iter->endpoint();
     socket.connect( tcp::endpoint( endpoint.address(), 17319));
+
     while (this->run) {
         string input;
         cin >> input;
         if (input == "h") {
+            bool keepListening=true;
             unique_lock<mutex> lock(this->mutVar);
-            cout<<"To end simulation type \":e\"" << endl;
-            cout<<"To continue simulation type \":cont\"" << endl;
-            cout<<"To set cells aflame type \":set\"" << endl;
-            cout<<"To save wold on server type \":s\"" << endl;
-            cout<<"To download wold from server type \":d\"" << endl;
-            cin >> input;
-            if (input == ":cont") {
-                lock.unlock();
-            }
-            if (input == ":set") {
-                cout<<"How many cells do you wish to set aflame?" << endl;
-                int cellsAflame;
-                cin >> cellsAflame;
-                setCellsAflameManually(cellsAflame);
-                lock.unlock();
-            }
-            if (input == ":e") {
-                this->run = false;
-                write("end", socket);
-            }
-            if (input == ":s") {
-                write(this->playingFieldToString(), socket);
-            }
-            if (input == ":d") {
-                write("download", socket);
-                cout << read(socket);
+            while(keepListening) {
+
+                cout << "To end simulation type \":e\"" << endl;
+                cout << "To continue simulation type \":cont\"" << endl;
+                cout << "To set cells aflame type \":set\"" << endl;
+                cout << "To save wold on server type \":s\"" << endl;
+                cout << "To download wold from server type \":d\"" << endl;
+
                 cin >> input;
-                write(input, socket);
-                replace(read(socket));
+
+                if (input == ":cont") {
+                    keepListening = false;
+                }
+                if (input == ":set") {
+                    cout << "How many cells do you wish to set aflame?" << endl;
+                    int cellsAflame;
+                    cin >> cellsAflame;
+                    setCellsAflameManually(cellsAflame);
+                }
+                if (input == ":e") {
+                    this->run = false;
+                    write("end", socket);
+                }
+                if (input == ":s") {
+                    write(this->playingFieldToString(), socket);
+                }
+                if (input == ":d") {
+                    write("download", socket);
+                    cout << read(socket);
+                    cin >> input;
+                    write(input, socket);
+                    replace(read(socket));
+                }
             }
+            lock.unlock();
         }
 
     }
@@ -336,7 +344,7 @@ void Simulation::replace(string message) {
         }
     }
 
-
+    printOut();
 }
 
 vector<string> Simulation::split(std::string stringToParse, char delimeter) {
