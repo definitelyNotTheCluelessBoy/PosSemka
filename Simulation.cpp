@@ -48,7 +48,7 @@ void Simulation::simulate() {
     while (this->run) {
 
 
-        Sleep(1000);
+        Sleep(2000);
 
         if (tempVector.size() != this->playFieldSize) {
             tempVector.resize(this->playFieldSize);
@@ -305,13 +305,15 @@ void Simulation::listenInput() {
                 if (input == ":e") {
                     this->run = false;
                     write("end", socket);
+                    keepListening = false;
                 }
                 if (input == ":s") {
                     write(this->playingFieldToString(), socket);
                 }
                 if (input == ":d") {
                     write("download", socket);
-                    cout << read(socket);
+                    cout << read(socket)<<endl;
+                    cout << "Chose a save you wish to load";
                     cin >> input;
                     write(input, socket);
                     replace(read(socket));
